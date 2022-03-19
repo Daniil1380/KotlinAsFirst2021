@@ -74,6 +74,15 @@ fun deleteMarked(inputName: String, outputName: String) {
     result.close()
 }
 
+
+fun countInLine(line: String, sub: String, k: Int): Int {
+    return if (!line.contains(sub)) k
+    else {
+        val new = k + 1
+        countInLine(line.substring(line.indexOf(sub) + 1), sub, new)
+    }
+}
+
 /**
  * Средняя (14 баллов)
  *
@@ -83,14 +92,6 @@ fun deleteMarked(inputName: String, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countInLine(line: String, sub: String, k: Int): Int {
-    return if (!line.contains(sub)) k
-    else {
-        val new = k + 1
-        countInLine(line.substring(line.indexOf(sub) + 1), sub, new)
-    }
-}
-
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
     val map = mutableMapOf<String, Int>()
     var count = 0
