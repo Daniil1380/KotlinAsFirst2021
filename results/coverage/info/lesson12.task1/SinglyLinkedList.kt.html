@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SinglyLinkedList.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">kfirst</a> &gt; <a href="index.source.html" class="el_package">lesson12.task1</a> &gt; <span class="el_source">SinglyLinkedList.kt</span></div><h1>SinglyLinkedList.kt</h1><pre class="source lang-java linenums">package lesson12.task1
+
+/**
+ * Пример: класс &quot;Однонаправленный линейный (связный) список&quot;.
+ *
+ * Подробности по организации см. статью Википедии &quot;Связный список&quot;.
+ * Поддерживаемые возможности: добавление (в начало),
+ * удаление (в начало и в конец), удаление заданного значения,
+ * вычисление размера и признака пустоты,
+ * сравнение списков на равенство
+ * (списки равны, если равны их размеры и соответствующие элементы),
+ * преобразование в строку.
+ *
+ * Возможные улучшения: преобразование в шаблонный класс &lt;T&gt;,
+ * реализация интерфейса (Mutable)List&lt;Int&gt; или (Mutable)List&lt;T&gt;
+ */
+<span class="fc" id="L17">class SinglyLinkedList {</span>
+
+    // Ссылка на первый узел в списке
+    private var start: Node? = null
+
+<span class="fc" id="L22">    private class Node(</span>
+<span class="fc" id="L23">        val value: Int,</span>
+<span class="fc" id="L24">        var next: Node? // next == null означает, что данный узел -- последний в списке</span>
+    )
+
+    fun add(newValue: Int) {
+        // Узел всегда добавляется в первую позицию в списке
+<span class="fc" id="L29">        start = Node(newValue, start)</span>
+<span class="fc" id="L30">    }</span>
+
+    // Удаление первого узла, возвращает false, если список пуст
+    fun removeFirst(): Boolean {
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (start == null) return false</span>
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        start = start?.next</span>
+<span class="fc" id="L36">        return true</span>
+    }
+
+    // Удаление последнего узла, возвращает false, если список пуст
+    fun removeLast(): Boolean {
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        val start = start ?: return false</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">        if (start.next == null) {</span>
+<span class="nc" id="L43">            this.start = null</span>
+        } else {
+<span class="fc" id="L45">            var current = start</span>
+<span class="pc bpc" id="L46" title="1 of 4 branches missed.">            while (current.next?.next != null) {</span>
+<span class="fc" id="L47">                current = current.next!!</span>
+            }
+<span class="fc" id="L49">            current.next = null</span>
+        }
+<span class="fc" id="L51">        return true</span>
+    }
+
+    // Удаление узла по значению, возвращает false, если узла с таким значением нет в списке
+    fun remove(removedValue: Int): Boolean {
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        val start = start ?: return false</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        if (start.value == removedValue) {</span>
+<span class="fc" id="L58">            this.start = start.next</span>
+<span class="fc" id="L59">            return true</span>
+        } else {
+<span class="fc" id="L61">            var current = start</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">            while (current.next != null) {</span>
+<span class="pc bpc" id="L63" title="1 of 6 branches missed.">                if (current.next?.value == removedValue) {</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">                    current.next = current.next?.next</span>
+<span class="fc" id="L65">                    return true</span>
+                }
+<span class="fc" id="L67">                current = current.next!!</span>
+            }
+<span class="fc" id="L69">            return false</span>
+        }
+    }
+
+    // Размер
+    val size: Int
+        get() {
+<span class="fc" id="L76">            var current = start</span>
+<span class="fc" id="L77">            var result = 0</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">            while (current != null) {</span>
+<span class="fc" id="L79">                current = current.next</span>
+<span class="fc" id="L80">                result++</span>
+            }
+<span class="fc" id="L82">            return result</span>
+        }
+
+    // Признак пустоты
+<span class="fc bfc" id="L86" title="All 2 branches covered.">    fun isEmpty(): Boolean = start == null</span>
+
+    // Списки равны, если равны их размеры и соответствующие элементы
+    override fun equals(other: Any?): Boolean {
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        if (this === other) return true</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">        if (other !is SinglyLinkedList) return false</span>
+<span class="fc" id="L92">        var ourCurrent = start</span>
+<span class="fc" id="L93">        var otherCurrent = other.start</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        while (ourCurrent != null) {</span>
+<span class="pc bpc" id="L95" title="1 of 4 branches missed.">            if (otherCurrent == null || ourCurrent.value != otherCurrent.value) return false</span>
+<span class="fc" id="L96">            ourCurrent = ourCurrent.next</span>
+<span class="fc" id="L97">            otherCurrent = otherCurrent.next</span>
+        }
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        return otherCurrent == null</span>
+    }
+
+    override fun hashCode(): Int {
+<span class="fc" id="L103">        var current = start</span>
+<span class="fc" id="L104">        var result = 13</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        while (current != null) {</span>
+<span class="fc" id="L106">            result = result * 31 + current.value</span>
+<span class="fc" id="L107">            current = current.next</span>
+        }
+<span class="fc" id="L109">        return result</span>
+    }
+
+    override fun toString(): String {
+<span class="fc" id="L113">        return buildString {</span>
+<span class="fc" id="L114">            append(&quot;[&quot;)</span>
+<span class="fc" id="L115">            val start = start</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">            if (start != null) {</span>
+<span class="fc" id="L117">                append(start.value)</span>
+<span class="fc" id="L118">                var current = start</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">                while (current?.next != null) {</span>
+<span class="fc" id="L120">                    current = current.next</span>
+<span class="fc" id="L121">                    append(&quot;, &quot;)</span>
+<span class="fc" id="L122">                    append(current!!.value)</span>
+                }
+            }
+<span class="fc" id="L125">            append(&quot;]&quot;)</span>
+<span class="fc" id="L126">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

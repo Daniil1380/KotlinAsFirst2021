@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IfElse.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">kfirst</a> &gt; <a href="index.source.html" class="el_package">lesson2.task1</a> &gt; <span class="el_source">IfElse.kt</span></div><h1>IfElse.kt</h1><pre class="source lang-java linenums">@file:Suppress(&quot;UNUSED_PARAMETER&quot;)
+
+package lesson2.task1
+
+import lesson1.task1.discriminant
+import lesson1.task1.sqr
+import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.sqrt
+
+// Урок 2: ветвления (здесь), логический тип (см. 2.2).
+// Максимальное количество баллов = 6
+// Рекомендуемое количество баллов = 5
+// Вместе с предыдущими уроками = 9/12
+
+/**
+ * Пример
+ *
+ * Найти число корней квадратного уравнения ax^2 + bx + c = 0
+ */
+fun quadraticRootNumber(a: Double, b: Double, c: Double): Int {
+<span class="fc" id="L22">    val discriminant = discriminant(a, b, c)</span>
+<span class="fc" id="L23">    return when {</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        discriminant &gt; 0.0 -&gt; 2</span>
+<span class="fc bfc" id="L25" title="All 4 branches covered.">        discriminant == 0.0 -&gt; 1</span>
+<span class="fc" id="L26">        else -&gt; 0</span>
+    }
+}
+
+/**
+ * Пример
+ *
+ * Получить строковую нотацию для оценки по пятибалльной системе
+ */
+<span class="pc bpc" id="L35" title="3 of 5 branches missed.">fun gradeNotation(grade: Int): String = when (grade) {</span>
+<span class="fc" id="L36">    5 -&gt; &quot;отлично&quot;</span>
+<span class="nc" id="L37">    4 -&gt; &quot;хорошо&quot;</span>
+<span class="fc" id="L38">    3 -&gt; &quot;удовлетворительно&quot;</span>
+<span class="nc" id="L39">    2 -&gt; &quot;неудовлетворительно&quot;</span>
+<span class="nc" id="L40">    else -&gt; &quot;несуществующая оценка $grade&quot;</span>
+<span class="fc" id="L41">}</span>
+
+/**
+ * Пример
+ *
+ * Найти наименьший корень биквадратного уравнения ax^4 + bx^2 + c = 0
+ */
+fun minBiRoot(a: Double, b: Double, c: Double): Double {
+    // 1: в главной ветке if выполняется НЕСКОЛЬКО операторов
+<span class="fc bfc" id="L50" title="All 4 branches covered.">    if (a == 0.0) {</span>
+<span class="fc bfc" id="L51" title="All 4 branches covered.">        if (b == 0.0) return Double.NaN // ... и ничего больше не делать</span>
+<span class="fc" id="L52">        val bc = -c / b</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (bc &lt; 0.0) return Double.NaN // ... и ничего больше не делать</span>
+<span class="fc" id="L54">        return -sqrt(bc)</span>
+        // Дальше функция при a == 0.0 не идёт
+    }
+<span class="fc" id="L57">    val d = discriminant(a, b, c)   // 2</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">    if (d &lt; 0.0) return Double.NaN  // 3</span>
+    // 4
+<span class="fc" id="L60">    val y1 = (-b + sqrt(d)) / (2 * a)</span>
+<span class="fc" id="L61">    val y2 = (-b - sqrt(d)) / (2 * a)</span>
+<span class="fc" id="L62">    val y3 = max(y1, y2)       // 5</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">    if (y3 &lt; 0.0) return Double.NaN // 6</span>
+<span class="fc" id="L64">    return -sqrt(y3)           // 7</span>
+}
+
+/**
+ * Простая (2 балла)
+ *
+ * Мой возраст. Для заданного 0 &lt; n &lt; 200, рассматриваемого как возраст человека,
+ * вернуть строку вида: «21 год», «32 года», «12 лет».
+ */
+fun ageDescription(age: Int): String =
+<span class="fc bfc" id="L74" title="All 12 branches covered.">    if (age in 11..19 || age in 111..119) &quot;$age лет&quot;</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">    else if (age % 10 == 1) &quot;$age год&quot;</span>
+<span class="pc bpc" id="L76" title="1 of 6 branches missed.">    else if (age % 10 in 2..4) &quot;$age года&quot;</span>
+<span class="fc" id="L77">    else &quot;$age лет&quot;</span>
+
+
+/**
+ * Простая (2 балла)
+ *
+ * Путник двигался t1 часов со скоростью v1 км/час, затем t2 часов — со скоростью v2 км/час
+ * и t3 часов — со скоростью v3 км/час.
+ * Определить, за какое время он одолел первую половину пути?
+ */
+fun timeForHalfWay(
+    t1: Double, v1: Double,
+    t2: Double, v2: Double,
+    t3: Double, v3: Double
+): Double {
+<span class="fc" id="L92">    val sHalf = (t1 * v1 + t2 * v2 + t3 * v3) / 2</span>
+<span class="fc" id="L93">    val s1 = t1 * v1</span>
+<span class="fc" id="L94">    val s2 = t2 * v2</span>
+<span class="fc" id="L95">    val s3 = t3 * v3</span>
+<span class="pc bpc" id="L96" title="2 of 4 branches missed.">    return if (s1 == sHalf) t1 </span>
+<span class="pc bpc" id="L97" title="2 of 4 branches missed.">    else if (s1 + s2 == sHalf) t1 + t2 </span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">    else if (s1 &gt; sHalf) sHalf / v1 </span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">    else if (s1 + s2 &gt; sHalf) t1 + (sHalf - s1) / v2 </span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">    else if (s1 + s2 + s3 &gt; sHalf) t1 + t2 + (sHalf - (s1 + s2)) / v3 </span>
+<span class="nc" id="L101">    else Double.NaN</span>
+}
+
+
+/**
+ * Простая (2 балла)
+ *
+ * Нa шахматной доске стоят черный король и две белые ладьи (ладья бьет по горизонтали и вертикали).
+ * Определить, не находится ли король под боем, а если есть угроза, то от кого именно.
+ * Вернуть 0, если угрозы нет, 1, если угроза только от первой ладьи, 2, если только от второй ладьи,
+ * и 3, если угроза от обеих ладей.
+ * Считать, что ладьи не могут загораживать друг друга
+ */
+fun whichRookThreatens(
+    kingX: Int, kingY: Int,
+    rookX1: Int, rookY1: Int,
+    rookX2: Int, rookY2: Int
+): Int =
+<span class="pc bpc" id="L119" title="2 of 8 branches missed.">    if ((rookX1 == kingX || rookY1 == kingY) &amp;&amp; (rookX2 == kingX || rookY2 == kingY)) 3 </span>
+<span class="pc bpc" id="L120" title="1 of 4 branches missed.">    else if (rookX2 == kingX || rookY2 == kingY) 2 </span>
+<span class="pc bpc" id="L121" title="1 of 4 branches missed.">    else if (rookX1 == kingX || rookY1 == kingY) 1 </span>
+<span class="fc" id="L122">    else 0</span>
+
+/**
+ * Простая (2 балла)
+ *
+ * На шахматной доске стоят черный король и белые ладья и слон
+ * (ладья бьет по горизонтали и вертикали, слон — по диагоналям).
+ * Проверить, есть ли угроза королю и если есть, то от кого именно.
+ * Вернуть 0, если угрозы нет, 1, если угроза только от ладьи, 2, если только от слона,
+ * и 3, если угроза есть и от ладьи и от слона.
+ * Считать, что ладья и слон не могут загораживать друг друга.
+ */
+fun rookOrBishopThreatens(
+    kingX: Int, kingY: Int,
+    rookX: Int, rookY: Int,
+    bishopX: Int, bishopY: Int
+): Int {
+<span class="fc" id="L139">    val diffX = bishopX - kingX</span>
+<span class="fc" id="L140">    val diffY = bishopY - kingY</span>
+<span class="pc bpc" id="L141" title="1 of 6 branches missed.">    return if ((rookX == kingX || rookY == kingY) &amp;&amp; (abs(diffX) == abs(diffY))) 3 </span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">    else if (abs(diffX) == abs(diffY)) 2 </span>
+<span class="pc bpc" id="L143" title="1 of 4 branches missed.">    else if (rookX == kingX || rookY == kingY) 1 </span>
+<span class="fc" id="L144">    else 0</span>
+}
+/**
+ * Простая (2 балла)
+ *
+ * Треугольник задан длинами своих сторон a, b, c.
+ * Проверить, является ли данный треугольник остроугольным (вернуть 0),
+ * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
+ * Если такой треугольник не существует, вернуть -1.
+ */
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+<span class="fc" id="L155">    val maxLen = maxOf(a, b, c)</span>
+<span class="fc" id="L156">    val minLen = minOf(a, b, c)</span>
+<span class="fc" id="L157">    val midLen = a + b + c - maxLen - minLen</span>
+<span class="fc" id="L158">    val cos = (sqr(minLen) + sqr(midLen) - sqr(maxLen)) / (2 * minLen * midLen)</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">    return if (minLen + midLen &lt; maxLen) -1 </span>
+<span class="fc bfc" id="L160" title="All 4 branches covered.">    else if (cos == 0.0) 1 </span>
+<span class="pc bpc" id="L161" title="1 of 4 branches missed.">    else if (cos &gt; 0 &amp;&amp; cos &lt; 1) 0 </span>
+<span class="pc bpc" id="L162" title="2 of 4 branches missed.">    else if (cos &lt; 0 &amp;&amp; cos &gt; -1) 2 </span>
+<span class="nc" id="L163">    else -1</span>
+}
+
+/**
+ * Средняя (3 балла)
+ *
+ * Даны четыре точки на одной прямой: A, B, C и D.
+ * Координаты точек a, b, c, d соответственно, b &gt;= a, d &gt;= c.
+ * Найти длину пересечения отрезков AB и CD.
+ * Если пересечения нет, вернуть -1.
+ */
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int =
+<span class="pc bpc" id="L175" title="1 of 12 branches missed.">    if (c in a..b &amp;&amp; d in a..b) d - c</span>
+<span class="pc bpc" id="L176" title="1 of 12 branches missed.">    else if (a in c..d &amp;&amp; b in c..d) b - a</span>
+<span class="pc bpc" id="L177" title="3 of 12 branches missed.">    else if (a in c..d &amp;&amp; d in a..b) d - a</span>
+<span class="pc bpc" id="L178" title="3 of 12 branches missed.">    else if (c in a..b &amp;&amp; b in c..d) b - c</span>
+<span class="fc" id="L179">    else -1</span>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

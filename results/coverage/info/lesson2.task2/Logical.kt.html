@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Logical.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">kfirst</a> &gt; <a href="index.source.html" class="el_package">lesson2.task2</a> &gt; <span class="el_source">Logical.kt</span></div><h1>Logical.kt</h1><pre class="source lang-java linenums">@file:Suppress(&quot;UNUSED_PARAMETER&quot;)
+
+package lesson2.task2
+
+import lesson1.task1.sqr
+import kotlin.math.abs
+
+/**
+ * Пример
+ *
+ * Лежит ли точка (x, y) внутри окружности с центром в (x0, y0) и радиусом r?
+ */
+fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
+<span class="fc bfc" id="L14" title="All 2 branches covered.">    sqr(x - x0) + sqr(y - y0) &lt;= sqr(r)</span>
+
+/**
+ * Простая (2 балла)
+ *
+ * Четырехзначное число назовем счастливым, если сумма первых двух ее цифр равна сумме двух последних.
+ * Определить, счастливое ли заданное число, вернуть true, если это так.
+ */
+fun isNumberHappy(number: Int): Boolean =
+<span class="fc bfc" id="L23" title="All 2 branches covered.">    number % 10 + number / 10 % 10 == number / 100 % 10 + number / 1000 % 10</span>
+
+/**
+ * Простая (2 балла)
+ *
+ * На шахматной доске стоят два ферзя (ферзь бьет по вертикали, горизонтали и диагоналям).
+ * Определить, угрожают ли они друг другу. Вернуть true, если угрожают.
+ * Считать, что ферзи не могут загораживать друг друга.
+ */
+fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
+<span class="pc bpc" id="L33" title="1 of 6 branches missed.">    x1 == x2 || y1 == y2 || abs(x2 - x1) == abs(y2 - y1)</span>
+
+
+/**
+ * Простая (2 балла)
+ *
+ * Дан номер месяца (от 1 до 12 включительно) и год (положительный).
+ * Вернуть число дней в этом месяце этого года по григорианскому календарю.
+ */
+fun daysInMonth(month: Int, year: Int): Int =
+<span class="fc bfc" id="L43" title="All 4 branches covered.">    if (month &lt;= 7 &amp;&amp; month % 2 != 0) 31</span>
+<span class="pc bpc" id="L44" title="1 of 6 branches missed.">    else if (month &lt;= 7 &amp;&amp; month % 2 == 0 &amp;&amp; month != 2) 30</span>
+<span class="pc bpc" id="L45" title="1 of 4 branches missed.">    else if (month &gt; 7 &amp;&amp; month % 2 == 0) 31</span>
+<span class="pc bpc" id="L46" title="3 of 4 branches missed.">    else if (month &gt; 7 &amp;&amp; month % 2 != 0) 30</span>
+<span class="pc bpc" id="L47" title="2 of 10 branches missed.">    else if ((month == 2 &amp;&amp; year % 4 == 0 &amp;&amp; year % 100 != 0) || (year % 400 == 0 &amp;&amp; month == 2)) 29</span>
+<span class="fc" id="L48">    else 28</span>
+
+/**
+ * Простая (2 балла)
+ *
+ * Проверить, лежит ли окружность с центром в (x1, y1) и радиусом r1 целиком внутри
+ * окружности с центром в (x2, y2) и радиусом r2.
+ * Вернуть true, если утверждение верно
+ */
+fun circleInside(
+    x1: Double, y1: Double, r1: Double,
+    x2: Double, y2: Double, r2: Double
+): Boolean =
+<span class="fc bfc" id="L61" title="All 4 branches covered.">    r2 &gt;= r1 &amp;&amp; sqr(x2 - x1) + sqr(y2 - y1) &lt;= sqr(r2 - r1)</span>
+
+
+
+/**
+ * Средняя (3 балла)
+ *
+ * Определить, пройдет ли кирпич со сторонами а, b, c сквозь прямоугольное отверстие в стене со сторонами r и s.
+ * Стороны отверстия должны быть параллельны граням кирпича.
+ * Считать, что совпадения длин сторон достаточно для прохождения кирпича, т.е., например,
+ * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
+ * Вернуть true, если кирпич пройдёт
+ */
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
+<span class="fc" id="L75">    val longSide = maxOf(a, b, c)</span>
+<span class="fc" id="L76">    val shortSide = minOf(a, b, c)</span>
+<span class="fc" id="L77">    val midSide = a + b + c - longSide - shortSide</span>
+<span class="fc" id="L78">    val maxLen = maxOf(r, s)</span>
+<span class="fc" id="L79">    val minLen = minOf(r, s)</span>
+<span class="pc bpc" id="L80" title="1 of 4 branches missed.">    return (midSide &lt;= maxLen &amp;&amp; shortSide &lt;= minLen)</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

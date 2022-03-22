@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DimensionalValue.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">kfirst</a> &gt; <a href="index.source.html" class="el_package">lesson11.task1</a> &gt; <span class="el_source">DimensionalValue.kt</span></div><h1>DimensionalValue.kt</h1><pre class="source lang-java linenums">@file:Suppress(&quot;UNUSED_PARAMETER&quot;)
+
+package lesson11.task1
+
+/**
+ * Класс &quot;Величина с размерностью&quot;.
+ *
+ * Предназначен для представления величин вроде &quot;6 метров&quot; или &quot;3 килограмма&quot;
+ * Общая сложность задания - средняя, общая ценность в баллах -- 18
+ * Величины с размерностью можно складывать, вычитать, делить, менять им знак.
+ * Их также можно умножать и делить на число.
+ *
+ * В конструктор передаётся вещественное значение и строковая размерность.
+ * Строковая размерность может:
+ * - либо строго соответствовать одной из abbreviation класса Dimension (m, g)
+ * - либо соответствовать одной из приставок, к которой приписана сама размерность (Km, Kg, mm, mg)
+ * - во всех остальных случаях следует бросить IllegalArgumentException
+ */
+<span class="fc" id="L19">class DimensionalValue(value: Double, dimension: String) : Comparable&lt;DimensionalValue&gt; {</span>
+    /**
+     * Величина с БАЗОВОЙ размерностью (например для 1.0Kg следует вернуть результат в граммах -- 1000.0)
+     */
+<span class="fc" id="L23">    val value: Double get() = TODO()</span>
+
+    /**
+     * БАЗОВАЯ размерность (опять-таки для 1.0Kg следует вернуть GRAM)
+     */
+<span class="nc" id="L28">    val dimension: Dimension get() = TODO()</span>
+
+    /**
+     * Конструктор из строки. Формат строки: значение пробел размерность (1 Kg, 3 mm, 100 g и так далее).
+     */
+<span class="fc" id="L33">    constructor(s: String) : this(TODO(), TODO())</span>
+
+    /**
+     * Сложение с другой величиной. Если базовая размерность разная, бросить IllegalArgumentException
+     * (нельзя складывать метры и килограммы)
+     */
+<span class="nc" id="L39">    operator fun plus(other: DimensionalValue): DimensionalValue = TODO()</span>
+
+    /**
+     * Смена знака величины
+     */
+<span class="nc" id="L44">    operator fun unaryMinus(): DimensionalValue = TODO()</span>
+
+    /**
+     * Вычитание другой величины. Если базовая размерность разная, бросить IllegalArgumentException
+     */
+<span class="nc" id="L49">    operator fun minus(other: DimensionalValue): DimensionalValue = TODO()</span>
+
+    /**
+     * Умножение на число
+     */
+<span class="nc" id="L54">    operator fun times(other: Double): DimensionalValue = TODO()</span>
+
+    /**
+     * Деление на число
+     */
+<span class="nc" id="L59">    operator fun div(other: Double): DimensionalValue = TODO()</span>
+
+    /**
+     * Деление на другую величину. Если базовая размерность разная, бросить IllegalArgumentException
+     */
+<span class="nc" id="L64">    operator fun div(other: DimensionalValue): Double = TODO()</span>
+
+    /**
+     * Сравнение на равенство
+     */
+<span class="nc" id="L69">    override fun equals(other: Any?): Boolean = TODO()</span>
+
+    /**
+     * Сравнение на больше/меньше. Если базовая размерность разная, бросить IllegalArgumentException
+     */
+<span class="nc" id="L74">    override fun compareTo(other: DimensionalValue): Int = TODO()</span>
+}
+
+/**
+ * Размерность. В этот класс можно добавлять новые варианты (секунды, амперы, прочие), но нельзя убирать
+ */
+<span class="nc" id="L80">enum class Dimension(val abbreviation: String) {</span>
+<span class="nc" id="L81">    METER(&quot;m&quot;),</span>
+<span class="nc" id="L82">    GRAM(&quot;g&quot;);</span>
+}
+
+/**
+ * Приставка размерности. Опять-таки можно добавить новые варианты (деци-, санти-, мега-, ...), но нельзя убирать
+ */
+<span class="nc" id="L88">enum class DimensionPrefix(val abbreviation: String, val multiplier: Double) {</span>
+<span class="nc" id="L89">    KILO(&quot;K&quot;, 1000.0),</span>
+<span class="nc" id="L90">    MILLI(&quot;m&quot;, 0.001);</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

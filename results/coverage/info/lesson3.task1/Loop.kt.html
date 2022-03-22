@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Loop.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">kfirst</a> &gt; <a href="index.source.html" class="el_package">lesson3.task1</a> &gt; <span class="el_source">Loop.kt</span></div><h1>Loop.kt</h1><pre class="source lang-java linenums">@file:Suppress(&quot;UNUSED_PARAMETER&quot;)
+
+package lesson3.task1
+
+
+import kotlin.math.sqrt
+import kotlin.math.pow
+import kotlin.math.roundToInt
+
+// Урок 3: циклы
+// Максимальное количество баллов = 9
+// Рекомендуемое количество баллов = 7
+// Вместе с предыдущими уроками = 16/21
+
+/**
+ * Пример
+ *
+ * Вычисление факториала
+ */
+fun factorial(n: Int): Double {
+<span class="fc" id="L21">    var result = 1.0</span>
+<span class="fc bfc" id="L22" title="All 4 branches covered.">    for (i in 1..n) {</span>
+<span class="fc" id="L23">        result = result * i // Please do not fix in master</span>
+    }
+<span class="fc" id="L25">    return result</span>
+}
+
+/**
+ * Пример
+ *
+ * Проверка числа на простоту -- результат true, если число простое
+ */
+fun isPrime(n: Int): Boolean {
+<span class="fc bfc" id="L34" title="All 2 branches covered.">    if (n &lt; 2) return false</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">    if (n == 2) return true</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">    if (n % 2 == 0) return false</span>
+<span class="fc bfc" id="L37" title="All 4 branches covered.">    for (m in 3..sqrt(n.toDouble()).toInt() step 2) {</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        if (n % m == 0) return false</span>
+    }
+<span class="fc" id="L40">    return true</span>
+}
+
+/**
+ * Пример
+ *
+ * Проверка числа на совершенность -- результат true, если число совершенное
+ */
+fun isPerfect(n: Int): Boolean {
+<span class="fc" id="L49">    var sum = 1</span>
+<span class="pc bpc" id="L50" title="1 of 4 branches missed.">    for (m in 2..n / 2) {</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        if (n % m &gt; 0) continue</span>
+<span class="fc" id="L52">        sum += m</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (sum &gt; n) break</span>
+    }
+<span class="fc bfc" id="L55" title="All 2 branches covered.">    return sum == n</span>
+}
+
+/**
+ * Пример
+ *
+ * Найти число вхождений цифры m в число n
+ */
+fun digitCountInNumber(n: Int, m: Int): Int =
+<span class="fc" id="L64">    when {</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        n == m -&gt; 1</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        n &lt; 10 -&gt; 0</span>
+<span class="fc" id="L67">        else -&gt; digitCountInNumber(n / 10, m) + digitCountInNumber(n % 10, m)</span>
+<span class="fc" id="L68">    }</span>
+
+/**
+ * Простая (2 балла)
+ *
+ * Найти количество цифр в заданном числе n.
+ * Например, число 1 содержит 1 цифру, 456 -- 3 цифры, 65536 -- 5 цифр.
+ *
+ * Использовать операции со строками в этой задаче запрещается.
+ */
+fun digitNumber(n: Int): Int {
+<span class="fc" id="L79">    var number = n</span>
+<span class="fc" id="L80">    var k = 0</span>
+    do {
+<span class="fc" id="L82">        k++</span>
+<span class="fc" id="L83">        number /= 10</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">    } while (number != 0)</span>
+<span class="fc" id="L85">    return k</span>
+}
+
+/**
+ * Простая (2 балла)
+ *
+ * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
+ * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
+ */
+fun fib(n: Int): Int {
+    var num1: Int
+<span class="fc" id="L96">    var num2 = 0</span>
+<span class="fc" id="L97">    var sum = 1</span>
+<span class="pc bpc" id="L98" title="1 of 6 branches missed.">    if (n in 1..2) return 1</span>
+<span class="pc bpc" id="L99" title="1 of 4 branches missed.">    else for (i in 1 until n) {</span>
+<span class="fc" id="L100">        num1 = num2</span>
+<span class="fc" id="L101">        num2 = sum</span>
+<span class="fc" id="L102">        sum = num1 + num2</span>
+    }
+<span class="fc" id="L104">    return sum</span>
+}
+
+/**
+ * Простая (2 балла)
+ *
+ * Для заданного числа n &gt; 1 найти минимальный делитель, превышающий 1
+ */
+fun minDivisor(n: Int): Int {
+<span class="fc bfc" id="L113" title="All 4 branches covered.">    for (m in 2..sqrt(n.toDouble()).toInt()) {</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        if (n % m == 0) return m</span>
+    }
+<span class="fc" id="L116">    return n</span>
+}
+
+/**
+ * Простая (2 балла)
+ *
+ * Для заданного числа n &gt; 1 найти максимальный делитель, меньший n
+ */
+fun maxDivisor(n: Int): Int {
+<span class="pc bpc" id="L125" title="1 of 4 branches missed.">    for (m in n / 2 downTo sqrt(n.toDouble()).toInt()) {</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">        if (n % m == 0) return m</span>
+    }
+<span class="fc" id="L128">    return 1</span>
+}
+
+/**
+ * Простая (2 балла)
+ *
+ * Гипотеза Коллатца. Рекуррентная последовательность чисел задана следующим образом:
+ *
+ *   ЕСЛИ (X четное)
+ *     Xслед = X /2
+ *   ИНАЧЕ
+ *     Xслед = 3 * X + 1
+ *
+ * например
+ *   15 46 23 70 35 106 53 160 80 40 20 10 5 16 8 4 2 1 4 2 1 4 2 1 ...
+ * Данная последовательность рано или поздно встречает X == 1.
+ * Написать функцию, которая находит, сколько шагов требуется для
+ * этого для какого-либо начального X &gt; 0.
+ */
+fun collatzSteps(x: Int): Int {
+<span class="fc" id="L148">    var k = 0</span>
+<span class="fc" id="L149">    var a = x</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">    while (a != 1) {</span>
+<span class="fc" id="L151">        k++</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">        if (a % 2 == 0) a /= 2</span>
+<span class="fc" id="L153">        else a = 3 * a + 1</span>
+    }
+<span class="fc" id="L155">    return k</span>
+}
+
+/**
+ * Средняя (3 балла)
+ *
+ * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
+ * минимальное число k, которое делится и на m и на n без остатка
+ */
+fun lcm(m: Int, n: Int): Int {
+<span class="pc bpc" id="L165" title="2 of 6 branches missed.">    for (i in maxOf(m, n)..(m * n) / 2 step maxOf(m, n)) {</span>
+<span class="fc bfc" id="L166" title="All 4 branches covered.">        if (i % m == 0 &amp;&amp; i % n == 0) {</span>
+<span class="fc" id="L167">            return i</span>
+        }
+    }
+<span class="fc" id="L170">    return m * n</span>
+}
+
+/**
+ * Средняя (3 балла)
+ *
+ * Определить, являются ли два заданных числа m и n взаимно простыми.
+ * Взаимно простые числа не имеют общих делителей, кроме 1.
+ * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
+ */
+fun isCoPrime(m: Int, n: Int): Boolean {
+<span class="fc" id="L181">    val max = maxOf(m, n)</span>
+<span class="fc" id="L182">    val min = m + n - max</span>
+<span class="pc bpc" id="L183" title="1 of 4 branches missed.">    for (i in 2..min) {</span>
+<span class="fc bfc" id="L184" title="All 4 branches covered.">        if (m % i == 0 &amp;&amp; n % i == 0) return false</span>
+    }
+<span class="fc" id="L186">    return true</span>
+}
+
+/**
+ * Средняя (3 балла)
+ *
+ * Поменять порядок цифр заданного числа n на обратный: 13478 -&gt; 87431.
+ *
+ * Использовать операции со строками в этой задаче запрещается.
+ */
+fun revert(n: Int): Int {
+<span class="fc" id="L197">    var sum = 0</span>
+<span class="fc" id="L198">    var num = n</span>
+    do {
+<span class="fc" id="L200">        sum = sum * 10 + (num % 10)</span>
+<span class="fc" id="L201">        num /= 10</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">    } while (num &gt; 0)</span>
+<span class="fc" id="L203">    return sum</span>
+}
+
+/**
+ * Средняя (3 балла)
+ **
+ * Проверить, является ли заданное число n палиндромом:
+ * первая цифра равна последней, вторая -- предпоследней и так далее.
+ * 15751 -- палиндром, 3653 -- нет.
+ *
+ * Использовать операции со строками в этой задаче запрещается.
+ */
+fun isPalindrome(n: Int): Boolean =
+<span class="fc bfc" id="L216" title="All 2 branches covered.">    n == revert(n)</span>
+
+/**
+ * Средняя (3 балла)
+ *
+ * Для заданного числа n определить, содержит ли оно различающиеся цифры.
+ * Например, 54 и 323 состоят из разных цифр, а 111 и 0 из одинаковых.
+ *
+ * Использовать операции со строками в этой задаче запрещается.
+ */
+fun hasDifferentDigits(n: Int): Boolean {
+<span class="fc" id="L227">    var num = n</span>
+<span class="fc" id="L228">    val div = num % 10</span>
+    do {
+<span class="fc bfc" id="L230" title="All 2 branches covered.">        if (div != num % 10) return true</span>
+<span class="fc" id="L231">        num /= 10</span>
+<span class="fc bfc" id="L232" title="All 2 branches covered.">    } while (num != 0)</span>
+<span class="fc" id="L233">    return false</span>
+}
+
+
+/**
+ * Средняя (4 балла)
+ *
+ * Для заданного x рассчитать с заданной точностью eps
+ * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
+ * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю.
+ * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
+ * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
+ */
+<span class="fc" id="L246">fun sin(x: Double, eps: Double): Double = TODO()</span>
+
+/**
+ * Средняя (4 балла)
+ *
+ * Для заданного x рассчитать с заданной точностью eps
+ * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
+ * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
+ * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
+ * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
+ */
+<span class="fc" id="L257">fun cos(x: Double, eps: Double): Double = TODO()</span>
+
+/**
+ * Сложная (4 балла)
+ *
+ * Найти n-ю цифру последовательности из квадратов целых чисел:
+ * 149162536496481100121144...
+ * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
+ *
+ * Использовать операции со строками в этой задаче запрещается.
+ */
+fun squareSequenceDigit(n: Int): Int {
+<span class="fc" id="L269">    var num = 1</span>
+<span class="fc" id="L270">    var sqr = num * num</span>
+<span class="fc" id="L271">    var k = 0</span>
+<span class="fc bfc" id="L272" title="All 2 branches covered.">    while (n &gt; k) {</span>
+<span class="fc" id="L273">        sqr = num * num</span>
+<span class="fc" id="L274">        k += digitNumber(sqr)</span>
+<span class="fc" id="L275">        num++</span>
+    }
+<span class="fc" id="L277">    return (sqr / 10.0.pow(k - n.toDouble())).toInt() % 10</span>
+}
+
+/**
+ * Сложная (5 баллов)
+ *
+ * Найти n-ю цифру последовательности из чисел Фибоначчи (см. функцию fib выше):
+ * 1123581321345589144...
+ * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
+ *
+ * Использовать операции со строками в этой задаче запрещается.
+ */
+fun fibSequenceDigit(n: Int): Int {
+<span class="fc" id="L290">    var num = 1</span>
+<span class="fc" id="L291">    var answ = fib(num)</span>
+<span class="fc" id="L292">    var k = 0</span>
+<span class="fc bfc" id="L293" title="All 2 branches covered.">    while (n &gt; k) {</span>
+<span class="fc" id="L294">        answ = fib(num)</span>
+<span class="fc" id="L295">        k += digitNumber(answ)</span>
+<span class="fc" id="L296">        num++</span>
+    }
+<span class="fc" id="L298">    return (answ / 10.0.pow(k - n.toDouble())).toInt() % 10</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
