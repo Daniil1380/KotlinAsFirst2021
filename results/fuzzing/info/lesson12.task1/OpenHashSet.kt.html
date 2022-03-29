@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OpenHashSet.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">kfirst</a> &gt; <a href="index.source.html" class="el_package">lesson12.task1</a> &gt; <span class="el_source">OpenHashSet.kt</span></div><h1>OpenHashSet.kt</h1><pre class="source lang-java linenums">@file:Suppress(&quot;UNUSED_PARAMETER&quot;)
+
+package lesson12.task1
+
+/**
+ * Класс &quot;хеш-таблица с открытой адресацией&quot;
+ *
+ * Общая сложность задания -- сложная, общая ценность в баллах -- 20.
+ * Объект класса хранит данные типа T в виде хеш-таблицы.
+ * Хеш-таблица не может содержать равные по equals элементы.
+ * Подробности по организации см. статью википедии &quot;Хеш-таблица&quot;, раздел &quot;Открытая адресация&quot;.
+ * Методы: добавление элемента, проверка вхождения элемента, сравнение двух таблиц на равенство.
+ * В этом задании не разрешается использовать библиотечные классы HashSet, HashMap и им подобные,
+ * а также любые функции, создающие множества (mutableSetOf и пр.).
+ *
+ * В конструктор хеш-таблицы передаётся её вместимость (максимальное количество элементов)
+ */
+<span class="fc" id="L18">class OpenHashSet&lt;T&gt;(val capacity: Int) {</span>
+
+    /**
+     * Массив для хранения элементов хеш-таблицы
+     */
+<span class="pc bfc" id="L23" title="All 2 branches covered.">    internal val elements = Array&lt;Any?&gt;(capacity) { null }</span>
+
+    /**
+     * Число элементов в хеш-таблице
+     */
+<span class="fc" id="L28">    val size: Int get() = TODO()</span>
+
+    /**
+     * Признак пустоты
+     */
+<span class="fc" id="L33">    fun isEmpty(): Boolean = TODO()</span>
+
+    /**
+     * Добавление элемента.
+     * Вернуть true, если элемент был успешно добавлен,
+     * или false, если такой элемент уже был в таблице, или превышена вместимость таблицы.
+     */
+<span class="fc" id="L40">    fun add(element: T): Boolean = TODO()</span>
+
+    /**
+     * Проверка, входит ли заданный элемент в хеш-таблицу
+     */
+<span class="nc" id="L45">    operator fun contains(element: T): Boolean = TODO()</span>
+
+    /**
+     * Таблицы равны, если в них одинаковое количество элементов,
+     * и любой элемент из второй таблицы входит также и в первую
+     */
+<span class="nc" id="L51">    override fun equals(other: Any?): Boolean = TODO()</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

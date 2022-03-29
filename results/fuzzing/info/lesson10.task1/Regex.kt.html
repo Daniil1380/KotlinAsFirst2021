@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Regex.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">kfirst</a> &gt; <a href="index.source.html" class="el_package">lesson10.task1</a> &gt; <span class="el_source">Regex.kt</span></div><h1>Regex.kt</h1><pre class="source lang-java linenums">package lesson10.task1
+
+import lesson10.task1.Expression.Operation.*
+import java.io.File
+import java.util.regex.Pattern
+
+// Урок 10: разбор синтаксически сложных выражений, алгебраические классы
+// Максимальное количество баллов = 15 (собственно, пока одна задача)
+
+/**
+ * Пример
+ *
+ * Во входном файле с именем inputName
+ * содержится строчка, содержащая описание функции от x, например:
+ *
+ * 3*x*x - 2 / x  + 7 -x
+ *
+ * В списке values содержатся целочисленные значения аргумента x, например, (1, 2, -1)
+ *
+ * Вернуть ассоциативный массив (map), содержащий отображение заданных значений аргумента
+ * в значение заданной в файле функции, в данном случае
+ *
+ * (1 to 7, 2 to 16, -1 to 13)
+ *
+ * В функции могут присутствовать четыре арифметических действия и круглые скобки.
+ * Обратите внимание, что функция является целочисленной,
+ * то есть деление также следует трактовать как целочисленное.
+ */
+fun parseExpr(inputName: String, values: List&lt;Int&gt;): Map&lt;Int, Int&gt; {
+<span class="pc bpc" id="L30" title="1 of 2 branches missed.">    val expr = File(inputName).readLines().firstOrNull()?.parseExpr() ?: throw IllegalArgumentException()</span>
+<span class="fc" id="L31">    val result = mutableMapOf&lt;Int, Int&gt;()</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">    for (value in values) {</span>
+<span class="fc" id="L33">        result[value] = expr.calculate(value)</span>
+    }
+<span class="fc" id="L35">    return result</span>
+}
+
+fun String.parseExpr(): Expression {
+<span class="fc" id="L39">    val pattern = Pattern.compile(&quot;&quot;&quot;x|\+|-|\*|/|\(|\)|\d+| +?|.+?&quot;&quot;&quot;)</span>
+<span class="fc" id="L40">    val matcher = pattern.matcher(this)</span>
+<span class="fc" id="L41">    val groups = mutableListOf&lt;String&gt;()</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">    while (matcher.find()) {</span>
+<span class="fc" id="L43">        val group = matcher.group()</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        if (group[0] != ' ') {</span>
+<span class="fc" id="L45">            groups.add(group)</span>
+        }
+    }
+<span class="fc" id="L48">    return Parser(groups).parse()</span>
+}
+
+sealed class Expression {
+<span class="fc" id="L52">    object Variable : Expression()</span>
+
+<span class="fc" id="L54">    class Constant(val value: Int) : Expression()</span>
+
+    enum class Operation {
+<span class="fc" id="L57">        PLUS,</span>
+<span class="fc" id="L58">        MINUS,</span>
+<span class="fc" id="L59">        TIMES,</span>
+<span class="fc" id="L60">        DIV,</span>
+<span class="fc" id="L61">        POW;</span>
+    }
+
+<span class="fc" id="L64">    class Binary(val left: Expression, val op: Operation, val right: Expression) : Expression()</span>
+
+<span class="fc" id="L66">    class Negate(val arg: Expression) : Expression()</span>
+
+<span class="fc" id="L68">    fun calculate(x: Int): Int = when (this) {</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        Variable -&gt; x</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        is Constant -&gt; value</span>
+<span class="fc bfc" id="L71" title="All 7 branches covered.">        is Binary -&gt; when (op) {</span>
+            PLUS -&gt; {
+<span class="fc" id="L73">                left.calculate(x) + right.calculate(x)</span>
+            }
+            MINUS -&gt; {
+<span class="fc" id="L76">                left.calculate(x) - right.calculate(x)</span>
+            }
+            TIMES -&gt; {
+<span class="fc" id="L79">                left.calculate(x) * right.calculate(x)</span>
+            }
+            DIV -&gt; {
+<span class="fc" id="L82">                left.calculate(x) / right.calculate(x)</span>
+            }
+            POW -&gt; {
+<span class="fc" id="L85">                TODO()</span>
+            }
+        }
+<span class="fc" id="L88">        is Negate -&gt; -arg.calculate(x)</span>
+<span class="fc" id="L89">    }</span>
+}
+
+<span class="fc" id="L92">class Parser(private val groups: List&lt;String&gt;) {</span>
+    private var pos = 0
+
+    fun parse(): Expression {
+<span class="fc" id="L96">        val result = parseExpression()</span>
+<span class="pc bpc" id="L97" title="2 of 4 branches missed.">        check(pos &gt;= groups.size) { &quot;Unexpected expression remainder: ${groups.subList(pos, groups.size)}&quot; }</span>
+<span class="fc" id="L98">        return result</span>
+    }
+
+    private fun parseExpression(): Expression {
+<span class="fc" id="L102">        var left = parseItem()</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        while (pos &lt; groups.size) {</span>
+<span class="fc bfc" id="L104" title="All 4 branches covered.">            when (val op = operationMap[groups[pos]]) {</span>
+                PLUS, MINUS -&gt; {
+<span class="fc" id="L106">                    pos++</span>
+<span class="fc" id="L107">                    val right = parseItem()</span>
+<span class="fc" id="L108">                    left = Expression.Binary(left, op, right)</span>
+                }
+<span class="fc" id="L110">                else -&gt; return left</span>
+            }
+        }
+<span class="fc" id="L113">        return left</span>
+    }
+
+    private fun parseItem(): Expression {
+<span class="fc" id="L117">        var left = parseFactor()</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        while (pos &lt; groups.size) {</span>
+<span class="fc bfc" id="L119" title="All 4 branches covered.">            when (val op = operationMap[groups[pos]]) {</span>
+                TIMES, DIV -&gt; {
+<span class="fc" id="L121">                    pos++</span>
+<span class="fc" id="L122">                    val right = parseFactor()</span>
+<span class="fc" id="L123">                    left = Expression.Binary(left, op, right)</span>
+                }
+<span class="fc" id="L125">                else -&gt; return left</span>
+            }
+        }
+<span class="fc" id="L128">        return left</span>
+    }
+
+    private fun parseFactor(): Expression {
+<span class="pc bpc" id="L132" title="2 of 4 branches missed.">        check(pos &lt; groups.size) { &quot;Unexpected expression end&quot; }</span>
+<span class="fc bfc" id="L133" title="All 4 branches covered.">        return when (val group = groups[pos++]) {</span>
+<span class="fc" id="L134">            &quot;x&quot; -&gt; Expression.Variable</span>
+<span class="fc" id="L135">            &quot;-&quot; -&gt; Expression.Negate(parseFactor())</span>
+            &quot;(&quot; -&gt; {
+<span class="fc" id="L137">                val arg = parseExpression()</span>
+<span class="fc" id="L138">                val next = groups[pos++]</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">                if (next == &quot;)&quot;) arg</span>
+<span class="nc" id="L140">                else throw IllegalStateException(&quot;) expected instead of $next&quot;)</span>
+            }
+<span class="fc" id="L142">            else -&gt; Expression.Constant(group.toInt())</span>
+        }
+    }
+
+    /**
+     * Сложная (15 баллов)
+     *
+     * Поддержать операцию возведения в степень на базе того же парсера.
+     * Операция обозначается символом ^, выполняется раньше, чем умножение и деление.
+     * Кроме написания этой функции, вам придётся вызвать её в одной или двух
+     * предыдущих функциях парсера, и поддержать операцию POW внутри функции calculate.
+     */
+    internal fun parseExponentiation(): Expression {
+<span class="nc" id="L155">        TODO()</span>
+    }
+
+<span class="fc" id="L158">    private val operationMap = mapOf(&quot;+&quot; to PLUS, &quot;-&quot; to MINUS, &quot;*&quot; to TIMES, &quot;/&quot; to DIV, &quot;^&quot; to POW)</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
